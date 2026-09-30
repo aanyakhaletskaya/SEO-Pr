@@ -1,6 +1,11 @@
 {% extends "base.html" %}
+{% load static %}
 
-{# SEO-ЗАДАНИЕ: title/description. Например: «Афиша событий в Чите: квизы и вечеринки в лофте | Подземка» #}
+{% block title %}Афиша событий в Чите: квизы, вечеринки и концерты в лофте — «Подземка»{% endblock %}
+
+{% block description %}
+  <meta name="description" content="Афиша «Подземки»: квизы, вечеринки, концерты и другие события. Приходите сами и зовите друзей. Следите за обновлениями!">
+{% endblock %}
 
 {% block content %}
 <section class="page-head">
@@ -18,7 +23,6 @@
         {% for p in posters %}{% include "includes/poster_card.html" %}{% endfor %}
       </div>
     {% else %}
-      {# SEO-ВОПРОС: пустая страница без контента — «тонкий» контент. Что сюда добавить? #}
       <p class="muted">Скоро здесь появятся новые события. Следите за нами в соцсетях!</p>
     {% endif %}
   </div>

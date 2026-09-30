@@ -5,20 +5,56 @@ from .models import FAQ, BookingRequest, EventFormat, Hall, MenuPackage, Poster,
 
 @admin.register(Hall)
 class HallAdmin(admin.ModelAdmin):
-    list_display = ("name", "line_number", "capacity_banquet", "area", "price_from", "order", "is_active")
+    list_display = ("name", "line_number", "capacity_banquet", "area", "price_from", "order", "is_active", "meta_title")
     list_editable = ("order", "is_active")
-    # ПОДСКАЗКА: когда добавите поле slug, раскомментируйте —
-    # slug будет заполняться автоматически при вводе названия:
+    # ПОДСКАЗКА: когда добавите поле slug, раскомментируйте:
     # prepopulated_fields = {"slug": ("name",)}
-    # Внимание: автозаполнение транслитерирует кириллицу — проверьте результат!
+
+    fieldsets = (
+        ("Основное", {
+            "fields": ("name", "line_color", "line_number", "short_description", "description")
+        }),
+        ("Характеристики", {
+            "fields": ("capacity_banquet", "capacity_buffet", "area", "price_from", "features")
+        }),
+        ("Медиа", {
+            "fields": ("image",)
+        }),
+        ("SEO", {
+            "fields": ("meta_title", "meta_description"),
+            "description": "Если оставить пустым — мета-теги сгенерируются автоматически."
+        }),
+        ("Отображение", {
+            "fields": ("order", "is_active")
+        }),
+    )
 
 
 @admin.register(Poster)
 class PosterAdmin(admin.ModelAdmin):
-    list_display = ("title", "topic", "date", "time", "schedule", "is_published")
+    list_display = ("title", "topic", "date", "time", "schedule", "is_published", "meta_title")
     list_filter = ("is_published",)
     list_editable = ("is_published",)
     date_hierarchy = "date"
+
+    fieldsets = (
+        ("Основное", {
+            "fields": ("title", "topic", "organizer", "short_description", "description")
+        }),
+        ("Дата и время", {
+            "fields": ("date", "time", "schedule")
+        }),
+        ("Медиа", {
+            "fields": ("image",)
+        }),
+        ("SEO", {
+            "fields": ("meta_title", "meta_description"),
+            "description": "Если оставить пустым — мета-теги сгенерируются автоматически."
+        }),
+        ("Публикация", {
+            "fields": ("is_published",)
+        }),
+    )
 
 
 @admin.register(EventFormat)

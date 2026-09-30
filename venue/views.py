@@ -7,10 +7,6 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .forms import BookingForm
 from .models import FAQ, EventFormat, Hall, MenuPackage, Poster, Review
 
-# ПОДСКАЗКА (общая): мета-теги удобно формировать во view и передавать в шаблон,
-# например: context["meta_title"] = f"{hall.name} — зал до {hall.capacity_banquet} гостей | Подземка"
-# А в base.html выводить {{ meta_title|default:"..." }}. Либо переопределять блоки в шаблонах.
-
 
 def home(request):
     reviews = Review.objects.filter(is_published=True)
@@ -38,10 +34,28 @@ def hall_detail(request, pk):
     hall = get_object_or_404(Hall, pk=pk, is_active=True)
     others = Hall.objects.filter(is_active=True).exclude(pk=hall.pk)
     form = BookingForm(initial={"hall": hall})
+
+    # Генерируем мета-теги: если заполнены в админке — используем их,
+    # иначе собираем автоматически из данных зала.
+    if hall.meta_title:
+        meta_title = hall.meta_title
+    else:
+        meta_title = f"{hall.name} — зал для банкетов на {hall.capacity_banquet} гостей | Подземка"
+
+    if hall.meta_description:
+        meta_description = hall.meta_description
+    else:
+        meta_description = (
+            f"{hall.short_description}. Вместимость до {hall.capacity_banquet} гостей, "
+            f"площадь {hall.area} м². Забронируйте зал «{hall.name}» в «Подземке»."
+        )
+
     return render(request, "venue/hall_detail.html", {
         "hall": hall,
         "others": others,
         "form": form,
+        "meta_title": meta_title,
+        "meta_description": meta_description,
     })
 
 
@@ -59,12 +73,25 @@ def poster_list(request):
 
 
 def poster_detail(request, pk):
-    # SEO-ВОПРОС: что делать со страницей события, когда оно уже прошло?
-    # Отдавать 404? 410? Оставить в архиве с пометкой «событие прошло»?
     poster = get_object_or_404(Poster, pk=pk, is_published=True)
+
+    if poster.meta_title:
+        meta_title = poster.meta_title
+    else:
+        meta_title = f"{poster.title} — {poster.date.strftime('%d.%m.%Y')} | Афиша Подземки"
+
+    if poster.meta_description:
+        meta_description = poster.meta_description
+    else:
+        meta_description = (
+            f"{poster.short_description}. Ждём вас {poster.date.strftime('%d.%m.%Y')} в «Подземке»."
+        )
+
     return render(request, "venue/poster_detail.html", {
         "poster": poster,
         "is_past": not poster.schedule and poster.date < datetime.date.today(),
+        "meta_title": meta_title,
+        "meta_description": meta_description,
     })
 
 
@@ -82,7 +109,6 @@ def events(request):
 
 
 def gallery(request):
-    # Фото галереи пока лежат в static/img. ПОДСКАЗКА: у картинок нет alt — проверьте шаблон!
     photos = [
         {"src": "img/hall-depo.jpg", "caption": "Зал «Депо»"},
         {"src": "img/hall-tonnel.webp", "caption": "Зал «Тоннель»"},
@@ -97,8 +123,6 @@ def contacts(request):
 
 
 def booking(request):
-    # SEO-ВОПРОС: нужна ли эта страница в поисковой выдаче? Если нет — как её закрыть?
-    # (meta robots noindex? Disallow в robots.txt? В чём разница?)
     if request.method == "POST":
         form = BookingForm(request.POST)
         if form.is_valid():
@@ -112,3 +136,18 @@ def booking(request):
             "guests": request.GET.get("guests"),
         })
     return render(request, "venue/booking.html", {"form": form})
+
+
+def robots_txt(request):
+    """Отдаёт robots.txt с content-type text/plain."""
+    from django.http import HttpResponse
+    return HttpResponse(
+        "User-agent: *\n"
+        "Disallow: /admin/\n"
+        "Disallow: /booking/\n"
+        "Disallow: /home/\n"
+        "Disallow: /accounts/\n"
+        "\n"
+        "Sitemap: http://127.0.0.1:8000/sitemap.xml\n",
+        content_type="text/plain",
+    )

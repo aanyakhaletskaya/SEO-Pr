@@ -37,11 +37,8 @@ class Hall(models.Model):
     )
 
     # SEO-ЗАДАНИЕ (управляемые мета-теги):
-    # ПОДСКАЗКА: хорошая практика — дать контент-менеджеру возможность задать
-    # title и description для каждой страницы вручную:
-    #     meta_title = models.CharField(max_length=70, blank=True)
-    #     meta_description = models.CharField(max_length=160, blank=True)
-    # а в шаблоне выводить их, если заполнены, иначе — сгенерированные.
+    meta_title = models.CharField("Meta Title", max_length=70, blank=True)
+    meta_description = models.CharField("Meta Description", max_length=160, blank=True)
 
     order = models.PositiveSmallIntegerField("Порядок", default=0)
     is_active = models.BooleanField("Показывать на сайте", default=True)
@@ -109,9 +106,6 @@ class Review(models.Model):
     created_at = models.DateField("Дата")
     is_published = models.BooleanField("Опубликован", default=True)
 
-    # ПОДСКАЗКА: отзывы с оценками — отличный повод для микроразметки
-    # Schema.org AggregateRating / Review (звёздочки в сниппете).
-
     class Meta:
         verbose_name = "Отзыв"
         verbose_name_plural = "Отзывы"
@@ -125,8 +119,6 @@ class FAQ(models.Model):
     question = models.CharField("Вопрос", max_length=255)
     answer = models.TextField("Ответ")
     order = models.PositiveSmallIntegerField("Порядок", default=0)
-
-    # ПОДСКАЗКА: вопросы-ответы можно разметить через Schema.org FAQPage (JSON-LD).
 
     class Meta:
         verbose_name = "Вопрос-ответ"
@@ -189,10 +181,10 @@ class Poster(models.Model):
 
     # SEO-ЗАДАНИЕ (ЧПУ): как и у залов, адрес события сейчас /afisha/1/.
     # Хороший адрес: /afisha/kviz-60-sekund-kompyuternye-igry/ — добавьте slug.
-    # ПОДСКАЗКА: у события в афише есть всё для Schema.org Event:
-    # name, startDate, location (Place + PostalAddress), image, organizer, description.
-    # Такая разметка может дать расширенный сниппет с датой в выдаче.
-    # Для регулярных событий (schedule) в Schema.org есть eventSchedule (тип Schedule).
+
+    # SEO-ЗАДАНИЕ (мета-теги для афиши):
+    meta_title = models.CharField("Meta Title", max_length=70, blank=True)
+    meta_description = models.CharField("Meta Description", max_length=160, blank=True)
 
     class Meta:
         verbose_name = "Событие афиши"
