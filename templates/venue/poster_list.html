@@ -7,11 +7,18 @@
   <meta name="description" content="Афиша «Подземки»: квизы, вечеринки, концерты и другие события. Приходите сами и зовите друзей. Следите за обновлениями!">
 {% endblock %}
 
+{% block breadcrumbs %}
+  <nav class="container breadcrumbs mono" aria-label="Хлебные крошки">
+    <a href="{% url 'venue:home' %}">Главная</a> <span>/</span>
+    <span>Афиша</span>
+  </nav>
+{% endblock %}
+
 {% block content %}
 <section class="page-head">
   <div class="container">
     <p class="mono muted">События</p>
-    <h1 class="page-head__title">Афиша</h1>
+    <h1 class="page-head__title">Афиша событий в лофте «Подземка»</h1>
     <p class="page-head__lead">Квизы, вечеринки и концерты в Подземке. Приходите сами и зовите друзей.</p>
   </div>
 </section>

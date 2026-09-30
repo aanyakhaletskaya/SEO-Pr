@@ -7,6 +7,13 @@
   <meta name="description" content="Четыре банкетных зала в стиле метро и лофт: от камерного «Тоннеля» на 30 гостей до всей площадки на 350. Своя кухня, бар, звук и свет. Выбирайте зал в «Подземке»!">
 {% endblock %}
 
+{% block breadcrumbs %}
+  <nav class="container breadcrumbs mono" aria-label="Хлебные крошки">
+    <a href="{% url 'venue:home' %}">Главная</a> <span>/</span>
+    <span>Залы</span>
+  </nav>
+{% endblock %}
+
 {% block content %}
 <section class="page-head">
   <div class="container">

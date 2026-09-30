@@ -1,15 +1,24 @@
 {% extends "base.html" %}
+{% load static %}
 
-{# SEO-ЗАДАНИЕ: сейчас все форматы (свадьбы, корпоративы...) на ОДНОЙ странице. #}
-{# Задание со звёздочкой: под каждый формат лучше иметь отдельную посадочную     #}
-{# страницу (/events/svadby/, /events/korporativy/) со своим h1, текстом и title. #}
-{# Почему это важно для продвижения по запросам «зал для свадьбы в стиле лофт»?  #}
+{% block title %}Мероприятия в лофте «Подземка»: свадьбы, корпоративы, дни рождения{% endblock %}
+
+{% block description %}
+  <meta name="description" content="Проводим свадьбы, корпоративы, дни рождения и концерты в лофте «Подземка» в Чите. Залы на 30–350 гостей, своя кухня, бар, звук и свет. Рассчитайте стоимость!">
+{% endblock %}
+
+{% block breadcrumbs %}
+  <nav class="container breadcrumbs mono" aria-label="Хлебные крошки">
+    <a href="{% url 'venue:home' %}">Главная</a> <span>/</span>
+    <span>Мероприятия</span>
+  </nav>
+{% endblock %}
 
 {% block content %}
 <section class="page-head">
   <div class="container">
     <p class="mono muted">Форматы</p>
-    <h1 class="page-head__title">Мероприятия</h1>
+    <h1 class="page-head__title">Мероприятия в лофте «Подземка»</h1>
     <p class="page-head__lead">Проводим события любого масштаба — от ужина на 20 человек до концерта на 350.</p>
   </div>
 </section>
@@ -21,7 +30,7 @@
         <h2>{{ f.title }}</h2>
         <div>
           <p>{{ f.description }}</p>
-          <a href="{% url 'venue:booking' %}" class="link-arrow">Рассчитать стоимость →</a>
+          <a href="{% url 'venue:booking' %}" class="link-arrow">Рассчитать стоимость мероприятия →</a>
         </div>
       </article>
     {% endfor %}

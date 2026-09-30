@@ -19,7 +19,7 @@
   <div class="container hero__inner">
     <p class="hero__kicker mono">↓ спуск −12 м · {{ site.city }}, {{ site.street }}</p>
 
-    <h1 class="hero__title glitch" data-text="ПОДЗЕМКА">ПОДЗЕМКА</h1>
+    <h1 class="hero__title glitch" data-text="ПОДЗЕМКА">ПОДЗЕМКА — банкетный зал в стиле лофт</h1>
 
     <p class="hero__lead">Банкетный зал в&nbsp;подвале на&nbsp;Курнатовского,&nbsp;17. Свадьбы, дни рождения, корпоративы и&nbsp;концерты на&nbsp;30–350&nbsp;гостей. Своя кухня и&nbsp;бар.</p>
     <div class="hero__actions">
@@ -36,21 +36,20 @@
 <section class="section">
   <div class="container">
     <div class="section__head">
-      <h2 class="section__title">Афиша</h2>
+      <h2 class="section__title">Афиша событий</h2>
     </div>
     <div class="posters">
       {% for p in posters %}{% include "includes/poster_card.html" %}{% endfor %}
     </div>
-    <p class="center"><a href="{% url 'venue:poster_list' %}" class="btn btn--ghost">Вся афиша →</a></p>
+    <p class="center"><a href="{% url 'venue:poster_list' %}" class="btn btn--ghost">Смотреть всю афишу событий →</a></p>
   </div>
 </section>
 {% endif %}
 
-{# Карта «метро» — схема залов #}
 <section class="section">
   <div class="container">
     <div class="section__head">
-      <h2 class="section__title">Схема линий</h2>
+      <h2 class="section__title">Схема линий: банкетные залы</h2>
       <p class="section__sub">Залы можно брать по отдельности или всю площадку целиком.</p>
     </div>
 
@@ -74,10 +73,10 @@
 <section class="section section--concrete">
   <div class="container about">
     <div class="about__text">
-      <h2 class="section__title">О площадке</h2>
+      <h2 class="section__title">О банкетном зале «Подземка»</h2>
       <p>Раньше здесь было бомбоубежище и техпомещения. Стены и своды мы оставили как были, добавили свет, звук, кухню и бар.</p>
       <p>Проводим свадьбы, выпускные, корпоративы, дни рождения. Бывают концерты и вечеринки, их смотрите в афише. Звук и свет свои, ведущего и декоратора можно привести своих.</p>
-      <a href="{% url 'venue:events' %}" class="link-arrow">Все форматы мероприятий →</a>
+      <a href="{% url 'venue:events' %}" class="link-arrow">Все форматы мероприятий в лофте →</a>
     </div>
     <div class="about__img">
       <img src="{% static 'img/hall-platforma.jpg' %}" alt="Банкетный зал «Платформа» в стиле лофт" width="800" height="600" loading="lazy">
@@ -142,7 +141,7 @@
 <section class="section section--concrete">
   <div class="container narrow">
     <div class="section__head">
-      <h2 class="section__title">Частые вопросы</h2>
+      <h2 class="section__title">Частые вопросы о банкетах</h2>
     </div>
     <div class="faq">
       {% for q in faqs %}
