@@ -7,6 +7,41 @@
   <meta name="description" content="Банкетный зал «Подземка» в Чите: лофт и андеграунд, залы на 30–350 гостей. Свадьбы, корпоративы, выпускные. Своя кухня и бар. Забронируйте дату!">
 {% endblock %}
 
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for q in faqs %}
+    {
+      "@type": "Question",
+      "name": "{{ q.question|escapejs }}",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "{{ q.answer|escapejs }}"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EventVenue",
+  "name": "{{ site.name }}",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ rating|stringformat:'.1f' }}",
+    "reviewCount": "{{ reviews_count }}",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
+}
+</script>
+{% endblock %}
+
 {% block body_class %}page-home{% endblock %}
 
 {% block content %}

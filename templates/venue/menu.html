@@ -12,6 +12,40 @@
     <a href="{% url 'venue:home' %}">Главная</a> <span>/</span>
     <span>Меню</span>
   </nav>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {"@type": "ListItem", "position": 1, "name": "Главная", "item": "{{ request.scheme }}://{{ request.get_host }}/"},
+      {"@type": "ListItem", "position": 2, "name": "Меню", "item": "{{ request.scheme }}://{{ request.get_host }}/menu/"}
+    ]
+  }
+  </script>
+{% endblock %}
+
+{% block extra_head %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "name": "Банкетное меню «Подземка»",
+  "hasMenuSection": [
+    {% for p in packages %}
+    {
+      "@type": "MenuSection",
+      "name": "{{ p.name|escapejs }}",
+      "description": "{{ p.description|escapejs }}",
+      "offers": {
+        "@type": "Offer",
+        "price": "{{ p.price_per_person }}",
+        "priceCurrency": "RUB"
+      }
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
 {% endblock %}
 
 {% block content %}
