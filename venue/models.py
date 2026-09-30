@@ -6,17 +6,6 @@ class Hall(models.Model):
     """Зал (в стилистике сайта — «станция»)."""
 
     name = models.CharField("Название", max_length=100)
-
-    # SEO-ЗАДАНИЕ (ЧПУ — человекопонятные URL):
-    # Сейчас залы открываются по адресу /halls/1/, /halls/2/ ... — это плохо для SEO.
-    # ПОДСКАЗКА: добавьте поле
-    #     slug = models.SlugField("URL", max_length=120, unique=True)
-    # затем: makemigrations -> migrate, заполните slug в админке (или через
-    # prepopulated_fields в admin.py), поменяйте маршрут в venue/urls.py на <slug:slug>
-    # и get_absolute_url() ниже. Хорошие адреса: /halls/depo/, /halls/tonnel/
-    # Будьте внимательны: unique=True на заполненной таблице требует миграции в 2 шага
-    # (или временно null=True / default) — разберитесь, как это сделать.
-
     line_color = models.CharField(
         "Цвет линии (HEX)", max_length=7, default="#e4312b",
         help_text="Цвет «ветки метро» для зала, например #e4312b",
@@ -36,12 +25,12 @@ class Hall(models.Model):
         "Картинка (путь в static)", max_length=200, default="img/hall-depo.jpg",
     )
 
-    # SEO-ЗАДАНИЕ (управляемые мета-теги):
     meta_title = models.CharField("Meta Title", max_length=70, blank=True)
     meta_description = models.CharField("Meta Description", max_length=160, blank=True)
 
     order = models.PositiveSmallIntegerField("Порядок", default=0)
     is_active = models.BooleanField("Показывать на сайте", default=True)
+    updated_at = models.DateTimeField("Обновлено", auto_now=True)
 
     class Meta:
         verbose_name = "Зал"
@@ -52,7 +41,6 @@ class Hall(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        # ПОДСКАЗКА: после добавления slug замените pk=self.pk на slug=self.slug
         return reverse("venue:hall_detail", kwargs={"pk": self.pk})
 
     def features_list(self):
@@ -179,10 +167,6 @@ class Poster(models.Model):
     image = models.CharField("Картинка (путь в static)", max_length=200, blank=True)
     is_published = models.BooleanField("Опубликовано", default=True)
 
-    # SEO-ЗАДАНИЕ (ЧПУ): как и у залов, адрес события сейчас /afisha/1/.
-    # Хороший адрес: /afisha/kviz-60-sekund-kompyuternye-igry/ — добавьте slug.
-
-    # SEO-ЗАДАНИЕ (мета-теги для афиши):
     meta_title = models.CharField("Meta Title", max_length=70, blank=True)
     meta_description = models.CharField("Meta Description", max_length=160, blank=True)
 

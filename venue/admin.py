@@ -7,8 +7,6 @@ from .models import FAQ, BookingRequest, EventFormat, Hall, MenuPackage, Poster,
 class HallAdmin(admin.ModelAdmin):
     list_display = ("name", "line_number", "capacity_banquet", "area", "price_from", "order", "is_active", "meta_title")
     list_editable = ("order", "is_active")
-    # ПОДСКАЗКА: когда добавите поле slug, раскомментируйте:
-    # prepopulated_fields = {"slug": ("name",)}
 
     fieldsets = (
         ("Основное", {
@@ -25,9 +23,10 @@ class HallAdmin(admin.ModelAdmin):
             "description": "Если оставить пустым — мета-теги сгенерируются автоматически."
         }),
         ("Отображение", {
-            "fields": ("order", "is_active")
+            "fields": ("order", "is_active", "updated_at")
         }),
     )
+    readonly_fields = ("updated_at",)
 
 
 @admin.register(Poster)
