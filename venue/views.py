@@ -8,6 +8,7 @@ from .forms import BookingForm
 from .models import FAQ, EventFormat, Hall, MenuPackage, Poster, Review
 
 
+
 def home(request):
     reviews = Review.objects.filter(is_published=True)
     context = {
@@ -139,15 +140,4 @@ def booking(request):
 
 
 def robots_txt(request):
-    """Отдаёт robots.txt с content-type text/plain."""
-    from django.http import HttpResponse
-    return HttpResponse(
-        "User-agent: *\n"
-        "Disallow: /admin/\n"
-        "Disallow: /booking/\n"
-        "Disallow: /home/\n"
-        "Disallow: /accounts/\n"
-        "\n"
-        "Sitemap: http://127.0.0.1:8000/sitemap.xml\n",
-        content_type="text/plain",
-    )
+    return render(request, "robots.txt", content_type="text/plain")
