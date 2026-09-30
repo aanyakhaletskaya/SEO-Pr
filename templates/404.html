@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Страница не найдена — «Подземка»{% endblock %}
+
+{% block description %}
+  <meta name="description" content="Страница не найдена. Вернитесь на главную или выберите раздел в меню.">
+{% endblock %}
+
+{% block robots %}
+  <meta name="robots" content="noindex, follow">
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container center">
+    <p class="mono muted">Ошибка 404</p>
+    <h1 class="page-head__title">Страница не найдена</h1>
+    <p class="page-head__lead">Похоже, вы свернули не на ту станцию. Вернитесь на главную или выберите раздел в меню.</p>
+    <p style="margin-top: 24px;">
+      <a href="{% url 'venue:home' %}" class="btn btn--neon">На главную</a>
+      <a href="{% url 'venue:hall_list' %}" class="btn btn--ghost">К залам</a>
+      <a href="{% url 'venue:poster_list' %}" class="btn btn--ghost">К афише</a>
+    </p>
+  </div>
+</section>
+{% endblock %}

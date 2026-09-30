@@ -2,11 +2,11 @@ import datetime
 
 from django.contrib import messages
 from django.db.models import Avg, Q
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 
 from .forms import BookingForm
 from .models import FAQ, EventFormat, Hall, MenuPackage, Poster, Review
-
 
 
 def home(request):
@@ -31,13 +31,11 @@ def hall_list(request):
     })
 
 
-def hall_detail(request, pk):
-    hall = get_object_or_404(Hall, pk=pk, is_active=True)
+def hall_detail(request, slug):
+    hall = get_object_or_404(Hall, slug=slug, is_active=True)
     others = Hall.objects.filter(is_active=True).exclude(pk=hall.pk)
     form = BookingForm(initial={"hall": hall})
 
-    # Генерируем мета-теги: если заполнены в админке — используем их,
-    # иначе собираем автоматически из данных зала.
     if hall.meta_title:
         meta_title = hall.meta_title
     else:
@@ -60,8 +58,15 @@ def hall_detail(request, pk):
     })
 
 
+def hall_detail_redirect(request, pk):
+    try:
+        hall = Hall.objects.get(pk=pk)
+    except Hall.DoesNotExist:
+        raise Http404
+    return redirect(hall.get_absolute_url(), permanent=True)
+
+
 def upcoming_posters():
-    """Будущие события + регулярные (у них заполнено поле schedule)."""
     return Poster.objects.filter(is_published=True).filter(
         Q(date__gte=datetime.date.today()) | ~Q(schedule=""),
     )
@@ -73,8 +78,8 @@ def poster_list(request):
     })
 
 
-def poster_detail(request, pk):
-    poster = get_object_or_404(Poster, pk=pk, is_published=True)
+def poster_detail(request, slug):
+    poster = get_object_or_404(Poster, slug=slug, is_published=True)
 
     if poster.meta_title:
         meta_title = poster.meta_title
@@ -94,6 +99,14 @@ def poster_detail(request, pk):
         "meta_title": meta_title,
         "meta_description": meta_description,
     })
+
+
+def poster_detail_redirect(request, pk):
+    try:
+        poster = Poster.objects.get(pk=pk)
+    except Poster.DoesNotExist:
+        raise Http404
+    return redirect(poster.get_absolute_url(), permanent=True)
 
 
 def menu(request):

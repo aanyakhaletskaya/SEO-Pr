@@ -1,8 +1,5 @@
 """
 Настройки проекта «Подземка» — банкетный зал в стиле лофт / андеграунд.
-
-Учебный проект по SEO. Ищите по проекту комментарии с пометкой «SEO-ЗАДАНИЕ»
-и «ПОДСКАЗКА» — это места, которые вам предстоит доработать (см. README.md).
 """
 
 import os
@@ -10,7 +7,6 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Для учебного проекта ключ по умолчанию — ок. В бою — только из переменной окружения!
 SECRET_KEY = os.environ.get(
     "DJANGO_SECRET_KEY",
     "dev-only-podzemka-secret-key-change-me-in-production-0123456789",

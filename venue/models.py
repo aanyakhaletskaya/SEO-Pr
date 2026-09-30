@@ -6,6 +6,7 @@ class Hall(models.Model):
     """Зал (в стилистике сайта — «станция»)."""
 
     name = models.CharField("Название", max_length=100)
+    slug = models.SlugField("URL", max_length=120, unique=True, allow_unicode=True)
     line_color = models.CharField(
         "Цвет линии (HEX)", max_length=7, default="#e4312b",
         help_text="Цвет «ветки метро» для зала, например #e4312b",
@@ -41,7 +42,7 @@ class Hall(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("venue:hall_detail", kwargs={"pk": self.pk})
+        return reverse("venue:hall_detail", kwargs={"slug": self.slug})
 
     def features_list(self):
         return [f.strip() for f in self.features.splitlines() if f.strip()]
@@ -154,6 +155,7 @@ class Poster(models.Model):
     """Событие в афише: квиз, концерт, вечеринка — с конкретной датой."""
 
     title = models.CharField("Название", max_length=150)
+    slug = models.SlugField("URL", max_length=120, unique=True, allow_unicode=True)
     topic = models.CharField("Тема", max_length=150, blank=True)
     organizer = models.CharField("Организатор", max_length=150, blank=True)
     date = models.DateField("Дата", help_text="Для регулярного события — дата первого проведения")
@@ -179,4 +181,4 @@ class Poster(models.Model):
         return f"{self.title} ({self.date:%d.%m.%Y})"
 
     def get_absolute_url(self):
-        return reverse("venue:poster_detail", kwargs={"pk": self.pk})
+        return reverse("venue:poster_detail", kwargs={"slug": self.slug})

@@ -7,10 +7,11 @@ from .models import FAQ, BookingRequest, EventFormat, Hall, MenuPackage, Poster,
 class HallAdmin(admin.ModelAdmin):
     list_display = ("name", "line_number", "capacity_banquet", "area", "price_from", "order", "is_active", "meta_title")
     list_editable = ("order", "is_active")
+    prepopulated_fields = {"slug": ("name",)}
 
     fieldsets = (
         ("Основное", {
-            "fields": ("name", "line_color", "line_number", "short_description", "description")
+            "fields": ("name", "slug", "line_color", "line_number", "short_description", "description")
         }),
         ("Характеристики", {
             "fields": ("capacity_banquet", "capacity_buffet", "area", "price_from", "features")
@@ -35,10 +36,11 @@ class PosterAdmin(admin.ModelAdmin):
     list_filter = ("is_published",)
     list_editable = ("is_published",)
     date_hierarchy = "date"
+    prepopulated_fields = {"slug": ("title",)}
 
     fieldsets = (
         ("Основное", {
-            "fields": ("title", "topic", "organizer", "short_description", "description")
+            "fields": ("title", "slug", "topic", "organizer", "short_description", "description")
         }),
         ("Дата и время", {
             "fields": ("date", "time", "schedule")
